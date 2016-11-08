@@ -231,6 +231,7 @@ def init_session_values():
     # Default time span each day, 8 to 5
     flask.session["begin_time"] = interpret_time("8am")
     flask.session["end_time"] = interpret_time("5pm")
+    flask.session["timerange"] = [flask.session["begin_time"].format("HH:mm")]
 
 def interpret_time( text ):
     """

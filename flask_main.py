@@ -61,6 +61,7 @@ def logout():
 
 @app.route("/choose")
 def choose():
+    print(gcal_service.events().list(calendarId='primary').execute())
     ## We'll need authorization to list calendars 
     ## I wanted to put what follows into a function, but had
     ## to pull it back here because the redirect has to be a

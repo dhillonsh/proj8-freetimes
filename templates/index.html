@@ -84,7 +84,7 @@
 <br>
 <form action="/settimerange" method="post">
 From: <input type="time" name="fromTime" id="fromTime" /> to <input type="time" name="toTime" id="toTime" />
-<input type="submit" value="Choose time range" />
+<br><input type="submit" value="Choose time range" />
 	
 </form>
     <!--
@@ -93,8 +93,9 @@ From: <input type="time" name="fromTime" id="fromTime" /> to <input type="time" 
     shown in each row (but the order is across then down; I would
     prefer down then across). 
     -->
-<form action="/setbusy" method="post">
+
 {% if g.calendars is defined  %}
+<form action="/setbusy" method="post">
   <div class="row">
   {% for cal in g.calendars if cal.selected %}
           <div class="col-md-4">
@@ -105,9 +106,10 @@ From: <input type="time" name="fromTime" id="fromTime" /> to <input type="time" 
          {% endif %}
   {% endfor %}
   </div>
-{% endif %}
 <br><input type="submit" value="Block busy times" />
 </form>
+{% endif %}
+
 
   </div>  <!-- container (for bootstrap) -->
   </body> </html>

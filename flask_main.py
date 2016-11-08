@@ -222,6 +222,7 @@ def init_session_values():
     Start with some reasonable defaults for date and time ranges.
     Note this must be run in app context ... can't call from main. 
     """
+    app.logger.debug('--- In here')
     # Default date span = tomorrow to 1 week from now
     now = arrow.now('local')     # We really should be using tz from browser
     tomorrow = now.replace(days=+1)
@@ -235,7 +236,7 @@ def init_session_values():
     flask.session["begin_time"] = interpret_time("8am")
     flask.session["end_time"] = interpret_time("5pm")
     #flask.session["timerange"] = ['123', flask.session["begin_time"].format("HH:mm")]
-    flask.session['timerange'] = '1234'
+    flask.session["timerange"] = '1234'
 
 def interpret_time( text ):
     """

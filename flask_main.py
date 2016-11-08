@@ -204,6 +204,9 @@ def setrange():
     app.logger.debug("Setrange parsed {} - {}  dates as {} - {}".format(
       daterange_parts[0], daterange_parts[1], 
       flask.session['begin_date'], flask.session['end_date']))
+
+    flask.session["begin_time"] = interpret_time(request.form.get('fromTime'))
+    flask.session["end_time"] = interpret_time(request.form.get('toTime'))
     return flask.redirect(flask.url_for("choose"))
 
 ####
@@ -227,7 +230,7 @@ def init_session_values():
         tomorrow.format("MM/DD/YYYY"),
         nextweek.format("MM/DD/YYYY"))
     # Default time span each day, 8 to 5
-    flask.session["begin_time"] = interpret_time("9am")
+    flask.session["begin_time"] = interpret_time("8am")
     flask.session["end_time"] = interpret_time("5pm")
 
 def interpret_time( text ):

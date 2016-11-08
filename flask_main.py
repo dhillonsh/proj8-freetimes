@@ -195,7 +195,7 @@ def setrange():
     """
     app.logger.debug("Entering setrange")  
     flask.flash("Setrange gave us '{}'".format(
-      request.form.get('daterange')))
+      request.form.get('daterange')).' and [from: {}'.format(request.form.get('fromTime')).' to {}'.format(request.form.get('toTime')).'])
     daterange = request.form.get('daterange')
     flask.session['daterange'] = daterange
     daterange_parts = daterange.split()

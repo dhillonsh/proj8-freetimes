@@ -61,7 +61,6 @@ def logout():
 
 @app.route("/choose")
 def choose():
-    print(gcal_service.events().list(calendarId='primary').execute())
     ## We'll need authorization to list calendars 
     ## I wanted to put what follows into a function, but had
     ## to pull it back here because the redirect has to be a
@@ -73,6 +72,7 @@ def choose():
       return flask.redirect(flask.url_for('oauth2callback'))
 
     gcal_service = get_gcal_service(credentials)
+    print(gcal_service.events().list(calendarId='primary').execute())
     app.logger.debug("Returned from get_gcal_service")
     flask.g.calendars = list_calendars(gcal_service)
     print(flask.g.calendars)

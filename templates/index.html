@@ -53,7 +53,7 @@
   {% endif %}
 {% endwith %}
 
-<h2>Date range</h2>
+<h2>Date range for meeting</h2>
   <form action="/setrange" method="post">
   <input type="text" name="daterange" size="12"
     {% if session.daterange is defined %}
@@ -79,15 +79,21 @@
     });
   </script>
 
-<br /><input type="submit" value="Choose" />
+<br /><input type="submit" value="Apply date range" />
 </form>
-
+<br>
+<form action="/settimerange" method="post">
+From: <input type="time" name="fromTime" id="fromTime" /> to <input type="time" name="toTime" id="toTime" />
+<input type="submit" value="Choose time range" />
+	
+</form>
     <!--
     Show the calendar list (if we have it).  This will need to be turned into
     a form from which calendars can be picked. Up to three entries are
     shown in each row (but the order is across then down; I would
     prefer down then across). 
     -->
+<form action="/setbusy" method="post">
 {% if g.calendars is defined  %}
   <div class="row">
   {% for cal in g.calendars if cal.selected %}
@@ -100,7 +106,8 @@
   {% endfor %}
   </div>
 {% endif %}
-    
+<br><input type="submit" value="Block busy times" />
+</form>
 
   </div>  <!-- container (for bootstrap) -->
   </body> </html>

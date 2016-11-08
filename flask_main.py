@@ -52,6 +52,7 @@ def index():
   app.logger.debug("Entering index")
   if 'begin_date' not in flask.session:
     init_session_values()
+  print(flask.session)
   return render_template('index.html')
 
 @app.route("/choose")

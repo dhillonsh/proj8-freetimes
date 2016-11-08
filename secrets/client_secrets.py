@@ -2,7 +2,7 @@
 #
 
 author = "Harpreet Dhillon"                               # As it appears in Canvas
-repo = "https://github.com/dhillonsh/proj6-mongo.git"  # Replace with yours
+repo = "https://github.com/dhillonsh/proj7-gcal.git"  # Replace with yours
 server_main = "flask_main"                              # flask_main.py is my main file
 
 # The database we will use within the MongoDB instance

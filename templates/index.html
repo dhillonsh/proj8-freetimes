@@ -82,9 +82,7 @@
 <br /><input type="submit" value="Apply date range" />
 
 <br>
-[{{ session.begin_time}}]
-	  <br>({{ session.timerange.0 }})
-From: <input type="time" name="fromTime" id="fromTime" value="{{session.begin_time}}" /> to <input type="time" name="toTime" id="toTime" value="{{session.end_time}}/>
+From: <input type="time" name="fromTime" id="fromTime" value="{{ session.timerange.0 }}" /> to <input type="time" name="toTime" id="toTime" value="{{ session.timerange.1 }}/>
 <br><input type="submit" value="Choose time range" />
 	
 </form>

@@ -212,7 +212,7 @@ def setrange():
     flask.session["begin_time"] = interpret_time(request.form.get('fromTime'))
     flask.session["end_time"] = interpret_time(request.form.get('toTime'))
     
-    flask.session["timerange"] = '123'#[request.form.get('fromTime'), request.form.get('toTime')]
+    flask.session["timerange"] = [request.form.get('fromTime'), request.form.get('toTime')]
     return flask.redirect(flask.url_for("choose"))
 
 ####
@@ -239,8 +239,7 @@ def init_session_values():
     # Default time span each day, 8 to 5
     flask.session["begin_time"] = interpret_time("8am")
     flask.session["end_time"] = interpret_time("5pm")
-    #flask.session["timerange"] = ['123', flask.session["begin_time"].format("HH:mm")]
-    flask.session["timerange"] = '1234'
+    flask.session["timerange"] = [flask.session["begin_time"].format("HH:mm"), flask.session["end_time"].format("HH:mm")]
 
 def interpret_time( text ):
     """

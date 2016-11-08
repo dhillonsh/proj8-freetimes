@@ -194,8 +194,7 @@ def setrange():
     widget.
     """
     app.logger.debug("Entering setrange")  
-    flask.flash("Setrange gave us '".
-      request.form.get('daterange')."' and [from: ".request.form.get('fromTime')." to ".request.form.get('toTime')."]")
+    flask.flash("Setrange gave us '" + request.form.get('daterange') + "' and [from: " + request.form.get('fromTime') + " to " + request.form.get('toTime') + "]")
     daterange = request.form.get('daterange')
     flask.session['daterange'] = daterange
     daterange_parts = daterange.split()

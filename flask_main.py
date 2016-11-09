@@ -97,6 +97,7 @@ def choose():
 
 @app.route('/selectcalendars', methods=['POST'])
 def selectcalendars():
+  print("--- In select calendars")
   print(request.form.get('calendarList'))
   return render_template('index.html')
 ####

@@ -110,6 +110,15 @@ From: <input type="time" name="fromTime" id="fromTime" value="{{ session.timeran
 </form>
 {% endif %}
 
+{% if g.busyEvents is defined  %}
+  {% for busyEvent in g.busyEvents%}
+  <did class="row">
+	<div class="col-md-4">
+		{{ busyEvent.start }} {{ busyEvent.end }} {{ busyEvent.summary }}
+	</div>
+  </div>
+  {% endfor %}
 
+{/endif}
   </div>  <!-- container (for bootstrap) -->
   </body> </html>

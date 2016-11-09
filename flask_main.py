@@ -73,7 +73,9 @@ def choose():
 
     gcal_service = get_gcal_service(credentials)
     eventList = gcal_service.events().list(calendarId='primary').execute()
-    print(eventList['items'])
+    #print(eventList['items'])
+    print(flask.session['begin_date'])
+    print(flask.session['begin_time'])
     
     app.logger.debug("Returned from get_gcal_service")
     flask.g.calendars = list_calendars(gcal_service)

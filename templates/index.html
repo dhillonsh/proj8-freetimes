@@ -66,7 +66,7 @@
 
 <h2>Date range for meeting</h2>
   <form action="/setrange" method="post">
-  <input type="text" name="daterange" size="12"
+  <input type="text" id="daterange" name="daterange" size="12"
     {% if session.daterange is defined %}
          value="{{session.daterange}}"
     {% endif %}

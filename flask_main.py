@@ -87,7 +87,7 @@ def choose():
     print(begin_date.isoformat())
     print(end_date.isoformat())
     
-    eventList = gcal_service.events().list(calendarId='primary', timeMin=begin_date.isoformat()).execute()
+    eventList = gcal_service.events().list(calendarId='primary', timeMin=begin_date.isoformat(), timeMax=end_date.isoformat()).execute()
     print(eventList)
     app.logger.debug("Returned from get_gcal_service")
     flask.g.calendars = list_calendars(gcal_service)

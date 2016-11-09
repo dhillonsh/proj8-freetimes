@@ -72,7 +72,9 @@ def choose():
       return flask.redirect(flask.url_for('oauth2callback'))
 
     gcal_service = get_gcal_service(credentials)
-    print(gcal_service.events().list(calendarId='primary').execute())
+    eventList = gcal_service.events().list(calendarId='primary').execute()
+    print(eventList['items'])
+    
     app.logger.debug("Returned from get_gcal_service")
     flask.g.calendars = list_calendars(gcal_service)
     print(flask.g.calendars)

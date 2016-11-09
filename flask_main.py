@@ -74,14 +74,11 @@ def choose():
     gcal_service = get_gcal_service(credentials)
     app.logger.debug("Returned from get_gcal_service")
     flask.g.calendars = list_calendars(gcal_service)
-    print(flask.g.calendars)
+
     return render_template('index.html')
 
 @app.route('/selectcalendars', methods=['POST'])
 def selectcalendars():
-    print("--- In select calendars")
-    print(request.form.getlist('calendarList[]'))
-
     credentials = valid_credentials()
     if not credentials:
       app.logger.debug("Redirecting to authorization")
@@ -93,28 +90,18 @@ def selectcalendars():
     
     end_time = arrow.get(flask.session['end_time'])
     end_date = arrow.get(flask.session['end_date']).replace(hour=end_time.hour, minute=end_time.minute)
-    print(begin_date.isoformat())
-    print(end_date.isoformat())
     
     busyTimes = []
     for calendar in request.form.getlist('calendarList[]'):
       eventList = gcal_service.events().list(calendarId=calendar, timeMin=begin_date.isoformat(), timeMax=end_date.isoformat()).execute()
-      print(eventList)
+
       for item in eventList['items']:
         if 'transparency' in item:
           continue
         formattedDate = arrow.get(item['start']['dateTime']).format("ddd MM/DD/YYYY HH:mm") + " - " + arrow.get(item['end']['dateTime']).format("HH:mm")
         busyTimes.append({'summary': item['summary'], 'start': item['start']['dateTime'], 'end': item['end']['dateTime'], 'formattedDate': formattedDate})
-        print(item['summary'])
-        print(item['start']['dateTime'] + " - " + item['end']['dateTime'])
-        print("\n")
-    print(busyTimes)
-
     flask.g.busyEvents = sorted(busyTimes, key=lambda k: k['start'])
     app.logger.debug("Returned from get_gcal_service")
-    flask.g.calendars = list_calendars(gcal_service)
-    print(flask.g.calendars)
-    
     return render_template('index.html')
 ####
 #

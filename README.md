@@ -1,55 +1,30 @@
-# proj6-Gcal
-Snarf appointment data from a selection of a user's Google calendars 
+# README #
 
-## What is here
+### Author: Harpreet Dhillon, harpreet@uoregon.edu ###
 
-I've provided code for the authorization (oauth2) protocol for Google
-calendars.  There is also a picker for a date range. 
+---
 
-## What you'll add
+### Purpose ###
+* This application is for Project 7 of CIS 322 at University of Oregon.
+* The purpose was to get an introduction with Google's Calendar API.
+* This is a mini-project that displays all the busy times within a given date/time range.
 
-You'll need to read the Google developer documentation to learn how to
-obtain information from the Google Calendar service.
+### Application Specifics ###
+* The main [index](/templates/index.html) displays all the calendar information
+* Necessary files (files not included in the repository):
+  * secrets/admin_secrets.py
+    * `google_key_file="PATH_TO_YOUR_google_client_key.json"
+    * The google_client_key.json can be obtained by following [this guide](https://auth0.com/docs/connections/social/google)
 
-Your application should allow the user to choose calendars (a single
-user may have several Google calendars, one of which is the 'primary'
-calendar) and list 'blocking'  (non-transparent)
-appointments between a start date and an end date
-for some subset of them.
-
-## Hints
-
-You'll need a 'client secret' file of your own.  It should *not* be
-under GIT control.  This is kind of a
-developer key, which you need to obtain from Google.  See
-https://auth0.com/docs/connections/social/google and
-https://developers.google.com/identity/protocols/OAuth2 .
-The applicable scenario for us is 'Web server applications'  (since
-we're doing this in Flask).  
-
-Your client secret will have to be registered for the URLs used for 
-the oauth2 'callback' in the authorization protocol.  This URL includes
-the port on which your application is running, so you you will need to 
-use the same port each time you run your application. You can register 
-the same key for multiple URLs, so for example I have registered mine
-for localhost:5000/oauth2callback, localhost:8000/oauth2callback, 
-roethke.d.cs.uoregon.edu:5000/oauth2callback, and 
-roethke.d.cs.uoregon.edu:8000/oauth2callback. (Roethke is my raspberry Pi
-at school.)  When we test your code, our grader and I will use our own 
-admin_secrets.py and google credentials files, but we will use your 
-client_secrets.py file.  As in the last project, your client_secrets.py
-file should include a reference to your repository and to your name, 
-so that our friendly (but clumsy) robots can use it to install your code. 
-
-I have noticed that getting the list of calendars from Google is very very 
-slow when running on my laptop at home, and snappier when accessing through
-roethke.  I suspect that is because roethke.d.cs.uoregon.edu is is 
-a routable IP address, while "localhost" on my home network requires some
-behind-the-curtains magic from my home router.  I don't know that for sure. 
-
-Whether or not you already have a Google calendar, it's a good idea to
-create one or two 'test' calendars with a known set of appointments
-for testing.
-
-
-
+### Running the Application ###
+* Test deployment to other environments including Raspberry Pi.  Deployment 
+  should work "out of the box" with this command sequence:
+  * `git clone <yourGitRepository> <targetDirectory>`
+  * `cd <targetDirectory>`
+  * `./configure`
+  * `make run`
+  * (control-C to stop program)
+* The default port is 5000, so the webserver should be reachable at http://localhost:5000 , and also through its IP address.
+ 
+### Testing the Application ###
+* There are no tests for this application.

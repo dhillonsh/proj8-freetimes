@@ -99,7 +99,7 @@ From: <input type="time" name="fromTime" id="fromTime" value="{{ session.timeran
   <div class="row">
   {% for cal in g.calendars if cal.selected %}
           <div class="col-md-4">
-	  <input type="checkbox" name="calendarList[]" value="{{ cal.summary }}" /> {{ cal.summary }}
+	  <input type="checkbox" name="calendarList[]" value="{{ cal.id }}" /> {{ cal.summary }}
           </div>
          {% if loop.index is divisibleby 3 %}
           </div> <div class="row">

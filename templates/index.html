@@ -157,7 +157,7 @@ From: <input type="time" name="fromTime" id="fromTime" value="{{ session.timeran
 			},
 
 			defaultView: 'listWeek',
-			defaultDate: '2016-09-12',
+			defaultDate: $('#daterange').val().split(' - ')[0],
 			navLinks: true, // can click day/week names to navigate views
 			editable: true,
 			eventLimit: true, // allow "more" link when too many events

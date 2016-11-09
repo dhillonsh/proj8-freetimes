@@ -13,7 +13,7 @@
 * The main [index](/templates/index.html) displays all the calendar information
 * Necessary files (files not included in the repository):
   * secrets/admin_secrets.py
-    * `google_key_file="PATH_TO_YOUR_google_client_key.json"
+    * `google_key_file="PATH_TO_YOUR_google_client_key.json"`
     * The google_client_key.json can be obtained by following [this guide](https://auth0.com/docs/connections/social/google)
 
 ### Running the Application ###

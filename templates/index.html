@@ -81,7 +81,7 @@
 
 <br /><input type="submit" value="Apply date range" />
 
-<br>
+<br><br>
 From: <input type="time" name="fromTime" id="fromTime" value="{{ session.timerange.0 }}" /> to 
 	 <input type="time" name="toTime" id="toTime" value="{{ session.timerange.1 }}"/>
 <br><input type="submit" value="Choose time range" />
@@ -94,7 +94,8 @@ From: <input type="time" name="fromTime" id="fromTime" value="{{ session.timeran
     prefer down then across). 
     -->
 
-{% if g.calendars is defined  %}
+{% if g.calendars is defined and g.busyEvents is not defined%}
+	<h3>Select Busy Calendars</h3>
 <form action="/selectcalendars" method="post">
   <div class="row">
   {% for cal in g.calendars if cal.selected %}
@@ -106,7 +107,7 @@ From: <input type="time" name="fromTime" id="fromTime" value="{{ session.timeran
          {% endif %}
   {% endfor %}
   </div>
-<br><input type="submit" value="Block busy times" />
+<br><input type="submit" value="Block busy calendars" />
 </form>
 {% endif %}
 

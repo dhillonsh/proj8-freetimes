@@ -81,7 +81,11 @@ def choose():
     
     begin_time = arrow.get(flask.session['begin_time'])
     begin_date = arrow.get(flask.session['begin_date']).replace(hour=begin_time.hour, minute=begin_time.minute)
+    
+    end_time = arrow.get(flask.session['end_time'])
+    end_date = arrow.get(flask.session['end_date']).replace(hour=end_time.hour, minute=end_time.minute)
     print(begin_date.isoformat())
+    print(end_date.isoformat())
     
     app.logger.debug("Returned from get_gcal_service")
     flask.g.calendars = list_calendars(gcal_service)

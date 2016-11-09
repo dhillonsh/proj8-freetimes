@@ -112,7 +112,7 @@ From: <input type="time" name="fromTime" id="fromTime" value="{{ session.timeran
 
 {% if g.busyEvents is defined  %}
   {% for busyEvent in g.busyEvents%}
-  <did class="row">
+  <div class="row">
 	<div class="col-md-4">
 		{{ busyEvent.formattedDate }}
 	  </div>

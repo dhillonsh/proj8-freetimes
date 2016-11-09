@@ -76,7 +76,7 @@ def choose():
     #print(eventList['items'])
     print(flask.session['begin_date'])
     print(flask.session['begin_time'])
-    
+    print(arrow.get(flask.session['begin_time']).hour)
     app.logger.debug("Returned from get_gcal_service")
     flask.g.calendars = list_calendars(gcal_service)
     print(flask.g.calendars)

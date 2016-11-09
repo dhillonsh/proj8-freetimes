@@ -114,7 +114,7 @@ From: <input type="time" name="fromTime" id="fromTime" value="{{ session.timeran
   {% for busyEvent in g.busyEvents%}
   <did class="row">
 	<div class="col-md-4">
-		{{ busyEvent.start }} {{ busyEvent.end }}
+		{{ busyEvent.formattedDate }}
 	  </div>
 	<div class="col-md-4">
 		{{ busyEvent.summary }}

@@ -111,6 +111,7 @@ From: <input type="time" name="fromTime" id="fromTime" value="{{ session.timeran
 {% endif %}
 
 {% if g.busyEvents is defined  %}
+	<h3>Busy Times:</h3>
   {% for busyEvent in g.busyEvents%}
   <div class="row">
 	<div class="col-md-4">

@@ -96,14 +96,15 @@ def selectcalendars():
     print(begin_date.isoformat())
     print(end_date.isoformat())
     
-    eventList = gcal_service.events().list(calendarId='primary', timeMin=begin_date.isoformat(), timeMax=end_date.isoformat()).execute()
-    print(eventList)
-    for item in eventList['items']:
-      if 'transparency' in item:
-        continue
-      print(item['summary'])
-      print(item['start']['dateTime'] + " - " + item['end']['dateTime'])
-      print("\n")
+    for calendar in request.form.getlist('calendarList[]'):
+      eventList = gcal_service.events().list(calendarId=calendar, timeMin=begin_date.isoformat(), timeMax=end_date.isoformat()).execute()
+      print(eventList)
+      for item in eventList['items']:
+        if 'transparency' in item:
+          continue
+        print(item['summary'])
+        print(item['start']['dateTime'] + " - " + item['end']['dateTime'])
+        print("\n")
     
     app.logger.debug("Returned from get_gcal_service")
     flask.g.calendars = list_calendars(gcal_service)

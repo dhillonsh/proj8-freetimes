@@ -72,12 +72,6 @@ def choose():
       return flask.redirect(flask.url_for('oauth2callback'))
 
     gcal_service = get_gcal_service(credentials)
-
-    #print(eventList['items'])
-    print(flask.session['begin_date'])
-    print(flask.session['begin_time'])
-    print(arrow.get(flask.session['begin_time']).hour)
-    
     
     begin_time = arrow.get(flask.session['begin_time'])
     begin_date = arrow.get(flask.session['begin_date']).replace(hour=begin_time.hour, minute=begin_time.minute)
@@ -101,6 +95,10 @@ def choose():
     print(flask.g.calendars)
     return render_template('index.html')
 
+@app.route('/selectcalendars', methods=['POST'])
+def selectcalendars():
+  print(request.form.get('calendarList'))
+  return render_template('index.html')
 ####
 #
 #  Google calendar authorization:

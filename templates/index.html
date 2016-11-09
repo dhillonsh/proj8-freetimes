@@ -139,11 +139,9 @@ From: <input type="time" name="fromTime" id="fromTime" value="{{ session.timeran
 <script>
 	$(document).ready(function() {
 		var busyEvents = {{ g.busyEvents | tojson  }}
-		alert(busyEvents);
 		var eventsList = [];
-		for(var i = 0; i < busyEvents.length; i++) {
-			alert(busyEvents[i]['summary']);	
-			eventsList.push({'title': busyEvents[i]['summary'], 'start': busyEvents[i]['begin_date'], 'end': busyEvents[i]['end_date']});
+		for(var i = 0; i < busyEvents.length; i++) {	
+			eventsList.push({'title': busyEvents[i]['summary'], 'start': busyEvents[i]['start'], 'end': busyEvents[i]['end']});
 		}
 		$('#calendar').fullCalendar({
 			header: {

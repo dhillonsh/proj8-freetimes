@@ -90,6 +90,8 @@ def choose():
     eventList = gcal_service.events().list(calendarId='primary', timeMin=begin_date.isoformat(), timeMax=end_date.isoformat()).execute()
     print(eventList)
     for item in eventList['items']:
+      if 'transparency' in item:
+        continue
       print(item['summary'])
       print(item['start']['dateTime'] + " - " + item['end']['dateTime'])
       print("\n")

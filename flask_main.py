@@ -108,9 +108,8 @@ def selectcalendars():
         print(item['start']['dateTime'] + " - " + item['end']['dateTime'])
         print("\n")
     print(busyTimes)
-    print("              V        ")
-    newlist = sorted(busyTimes, key=lambda k: k['start'])
-    print(newlist)
+
+    flask.busyEvents = sorted(busyTimes, key=lambda k: k['start'])
     app.logger.debug("Returned from get_gcal_service")
     flask.g.calendars = list_calendars(gcal_service)
     print(flask.g.calendars)

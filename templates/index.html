@@ -140,6 +140,11 @@ From: <input type="time" name="fromTime" id="fromTime" value="{{ session.timeran
 	$(document).ready(function() {
 		var busyEvents = {{ g.busyEvents | tojson  }}
 		alert(busyEvents);
+		var eventsList = [];
+		for(var i = 0; i < busyEvents.length; i++) {
+			alert(busyEvents[i]['summary']);	
+			
+		}
 		$('#calendar').fullCalendar({
 			header: {
 				left: 'prev,next today',

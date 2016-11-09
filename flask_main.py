@@ -81,7 +81,11 @@ def choose():
 def selectcalendars():
     print("--- In select calendars")
     print(request.form.getlist('calendarList[]'))
-  
+
+    credentials = valid_credentials()
+    if not credentials:
+      app.logger.debug("Redirecting to authorization")
+      return flask.redirect(flask.url_for('oauth2callback'))
     gcal_service = get_gcal_service(credentials)
     
     begin_time = arrow.get(flask.session['begin_time'])

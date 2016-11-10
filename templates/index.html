@@ -99,12 +99,6 @@ From: <input type="time" name="fromTime" id="fromTime" value="{{ session.timeran
 <br><input type="submit" value="Choose time range" />
 	
 </form>
-    <!--
-    Show the calendar list (if we have it).  This will need to be turned into
-    a form from which calendars can be picked. Up to three entries are
-    shown in each row (but the order is across then down; I would
-    prefer down then across). 
-    -->
 
 {% if g.calendars is defined and g.busyEvents is not defined%}
 	<h3>Select Busy Calendars</h3>

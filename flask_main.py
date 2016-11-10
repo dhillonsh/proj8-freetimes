@@ -9,7 +9,6 @@ import logging
 
 # Date handling 
 import arrow # Replacement for datetime, based on moment.js
-# import datetime # But we still need time
 from dateutil import tz  # For interpreting local times
 
 
@@ -26,10 +25,6 @@ from apiclient import discovery
 import CONFIG
 import secrets.admin_secrets  # Per-machine secrets
 import secrets.client_secrets # Per-application secrets
-#  Note to CIS 322 students:  client_secrets is what you turn in.
-#     You need an admin_secrets, but the grader and I don't use yours. 
-#     We use our own admin_secrets file along with your client_secrets
-#     file on our Raspberry Pis. 
 
 app = flask.Flask(__name__)
 app.debug=CONFIG.DEBUG
@@ -37,7 +32,7 @@ app.logger.setLevel(logging.DEBUG)
 app.secret_key=CONFIG.secret_key
 
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-CLIENT_SECRET_FILE = secrets.admin_secrets.google_key_file  ## You'll need this
+CLIENT_SECRET_FILE = secrets.admin_secrets.google_key_file
 APPLICATION_NAME = 'MeetMe class project'
 
 #############################
@@ -54,17 +49,15 @@ def index():
     init_session_values()
   return render_template('index.html')
 
+'''
 @app.route("/logout")
 def logout():
   flask.session.clear()
   return ""
+'''
 
 @app.route("/choose")
 def choose():
-    ## We'll need authorization to list calendars 
-    ## I wanted to put what follows into a function, but had
-    ## to pull it back here because the redirect has to be a
-    ## 'return' 
     app.logger.debug("Checking credentials for Google calendar access")
     credentials = valid_credentials()
     if not credentials:
@@ -103,6 +96,72 @@ def selectcalendars():
     flask.g.busyEvents = sorted(busyTimes, key=lambda k: k['start'])
     app.logger.debug("Returned from get_gcal_service")
     return render_template('index.html')
+
+  
+@app.route('/setrange', methods=['POST'])
+def setrange():
+    """
+    User chose a date range with the bootstrap daterange
+    widget.
+    """
+    app.logger.debug("Entering setrange")  
+    flask.flash("Setrange gave us '" + request.form.get('daterange') + "' and [from: " + request.form.get('fromTime') + " to " + request.form.get('toTime') + "]")
+    daterange = request.form.get('daterange')
+    flask.session['daterange'] = daterange
+    daterange_parts = daterange.split()
+    flask.session['begin_date'] = interpret_date(daterange_parts[0])
+    flask.session['end_date'] = interpret_date(daterange_parts[2])
+    app.logger.debug("Setrange parsed {} - {}  dates as {} - {}".format(
+      daterange_parts[0], daterange_parts[1], 
+      flask.session['begin_date'], flask.session['end_date']))
+
+    flask.session["begin_time"] = interpret_time(request.form.get('fromTime'))
+    flask.session["end_time"] = interpret_time(request.form.get('toTime'))
+    
+    flask.session["timerange"] = [request.form.get('fromTime'), request.form.get('toTime')]
+    return flask.redirect(flask.url_for("choose"))  
+  
+
+@app.route('/oauth2callback')
+def oauth2callback():
+  """
+  The 'flow' has this one place to call back to.  We'll enter here
+  more than once as steps in the flow are completed, and need to keep
+  track of how far we've gotten. The first time we'll do the first
+  step, the second time we'll skip the first step and do the second,
+  and so on.
+  """
+  app.logger.debug("Entering oauth2callback")
+  flow =  client.flow_from_clientsecrets(
+      CLIENT_SECRET_FILE,
+      scope= SCOPES,
+      redirect_uri=flask.url_for('oauth2callback', _external=True))
+  ## Note we are *not* redirecting above.  We are noting *where*
+  ## we will redirect to, which is this function. 
+  
+  ## The *second* time we enter here, it's a callback 
+  ## with 'code' set in the URL parameter.  If we don't
+  ## see that, it must be the first time through, so we
+  ## need to do step 1. 
+  app.logger.debug("Got flow")
+  if 'code' not in flask.request.args:
+    app.logger.debug("Code not in flask.request.args")
+    auth_uri = flow.step1_get_authorize_url()
+    return flask.redirect(auth_uri)
+    ## This will redirect back here, but the second time through
+    ## we'll have the 'code' parameter set
+  else:
+    ## It's the second time through ... we can tell because
+    ## we got the 'code' argument in the URL.
+    app.logger.debug("Code was in flask.request.args")
+    auth_code = flask.request.args.get('code')
+    credentials = flow.step2_exchange(auth_code)
+    flask.session['credentials'] = credentials.to_json()
+    app.logger.debug("Got credentials")
+    return flask.redirect(flask.url_for('choose'))
+  
+  
+  
 ####
 #
 #  Google calendar authorization:
@@ -167,80 +226,7 @@ def get_gcal_service(credentials):
   app.logger.debug("Returning service")
   return service
 
-@app.route('/oauth2callback')
-def oauth2callback():
-  """
-  The 'flow' has this one place to call back to.  We'll enter here
-  more than once as steps in the flow are completed, and need to keep
-  track of how far we've gotten. The first time we'll do the first
-  step, the second time we'll skip the first step and do the second,
-  and so on.
-  """
-  app.logger.debug("Entering oauth2callback")
-  flow =  client.flow_from_clientsecrets(
-      CLIENT_SECRET_FILE,
-      scope= SCOPES,
-      redirect_uri=flask.url_for('oauth2callback', _external=True))
-  ## Note we are *not* redirecting above.  We are noting *where*
-  ## we will redirect to, which is this function. 
-  
-  ## The *second* time we enter here, it's a callback 
-  ## with 'code' set in the URL parameter.  If we don't
-  ## see that, it must be the first time through, so we
-  ## need to do step 1. 
-  app.logger.debug("Got flow")
-  if 'code' not in flask.request.args:
-    app.logger.debug("Code not in flask.request.args")
-    auth_uri = flow.step1_get_authorize_url()
-    return flask.redirect(auth_uri)
-    ## This will redirect back here, but the second time through
-    ## we'll have the 'code' parameter set
-  else:
-    ## It's the second time through ... we can tell because
-    ## we got the 'code' argument in the URL.
-    app.logger.debug("Code was in flask.request.args")
-    auth_code = flask.request.args.get('code')
-    credentials = flow.step2_exchange(auth_code)
-    flask.session['credentials'] = credentials.to_json()
-    ## Now I can build the service and execute the query,
-    ## but for the moment I'll just log it and go back to
-    ## the main screen
-    app.logger.debug("Got credentials")
-    return flask.redirect(flask.url_for('choose'))
 
-#####
-#
-#  Option setting:  Buttons or forms that add some
-#     information into session state.  Don't do the
-#     computation here; use of the information might
-#     depend on what other information we have.
-#   Setting an option sends us back to the main display
-#      page, where we may put the new information to use. 
-#
-#####
-
-@app.route('/setrange', methods=['POST'])
-def setrange():
-    """
-    User chose a date range with the bootstrap daterange
-    widget.
-    """
-    app.logger.debug("Entering setrange")  
-    flask.flash("Setrange gave us '" + request.form.get('daterange') + "' and [from: " + request.form.get('fromTime') + " to " + request.form.get('toTime') + "]")
-    daterange = request.form.get('daterange')
-    flask.session['daterange'] = daterange
-    daterange_parts = daterange.split()
-    flask.session['begin_date'] = interpret_date(daterange_parts[0])
-    flask.session['end_date'] = interpret_date(daterange_parts[2])
-    app.logger.debug("Setrange parsed {} - {}  dates as {} - {}".format(
-      daterange_parts[0], daterange_parts[1], 
-      flask.session['begin_date'], flask.session['end_date']))
-
-    flask.session["begin_time"] = interpret_time(request.form.get('fromTime'))
-    flask.session["end_time"] = interpret_time(request.form.get('toTime'))
-    
-    flask.session["timerange"] = [request.form.get('fromTime'), request.form.get('toTime')]
-    return flask.redirect(flask.url_for("choose"))
 
 ####
 #

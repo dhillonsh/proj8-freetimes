@@ -106,7 +106,7 @@ def selectcalendars():
         #  continue
         
         formattedDate = itemStart.format("ddd MM/DD/YYYY HH:mm") + " - " + itemEnd.format("HH:mm")
-        busyTimes.append({'summary': item['summary'], 'start': itemStart, 'end': itemEnd, 'formattedDate': formattedDate})
+        busyTimes.append({'summary': item['summary'], 'start': item['start']['dateTime'], 'end': item['end']['dateTime'], 'formattedDate': formattedDate})
     flask.g.busyEvents = sorted(busyTimes, key=lambda k: k['start'])
     app.logger.debug("Returned from get_gcal_service")
     return render_template('index.html')

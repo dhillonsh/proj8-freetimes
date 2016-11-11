@@ -99,11 +99,11 @@ def selectcalendars():
       for item in eventList['items']:
         if 'transparency' in item:
           continue
-        itemStart = arrow.get(item['start']['dateTime'])
-        itemEnd = arrow.get(item['end']['dateTime'])
+        #itemStart = arrow.get(item['start']['dateTime'])
+        #itemEnd = arrow.get(item['end']['dateTime'])
         
-        if itemStart > begin_date or itemEnd > end_date:
-          continue
+        #if itemStart > begin_date or itemEnd > end_date:
+        #  continue
         
         formattedDate = itemStart.format("ddd MM/DD/YYYY HH:mm") + " - " + itemEnd.format("HH:mm")
         busyTimes.append({'summary': item['summary'], 'start': itemStart, 'end': itemEnd, 'formattedDate': formattedDate})

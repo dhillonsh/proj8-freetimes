@@ -100,12 +100,23 @@ def selectcalendars():
       for item in eventList['items']:
         if 'transparency' in item:
           continue
+          
+        
+          
         itemStart = arrow.get(item['start']['dateTime'])
         itemEnd = arrow.get(item['end']['dateTime'])
         
+        begin_date = arrow.get(itemStart).replace(hour=begin_time.hour, minute=begin_time.minute)
+        end_date = arrow.get(itemEnd).replace(hour=end_time.hour, minute=end_time.minute)
+        
         print("ItemStart - " + itemStart.isoformat() + " | " + item['summary'] + " | ")
-        if (itemStart.hour < begin_time.hour) or (itemStart.hour == begin_time.hour and itemStart.minute < begin_time.minute) or itemEnd.hour > end_time.hour or (itemEnd.hour == end_time.hour and itemEnd.minute > begin_time.minute):
+        
+        #if (itemStart.hour < begin_time.hour) or (itemStart.hour == begin_time.hour and itemStart.minute < begin_time.minute) or itemEnd.hour > end_time.hour or (itemEnd.hour == end_time.hour and itemEnd.minute > begin_time.minute):
+        #  continue
+        #if (itemEnd.hour < begin_time.hour) or (itemEnd.hour == begin_time.hour and itemEnd.minute < begin_time.minute) or (itemStart.hour > 
+        if itemEnd <= begin_date or itemStart >= end_date:
           continue
+        
         
         formattedDate = itemStart.format("ddd MM/DD/YYYY HH:mm") + " - " + itemEnd.format("HH:mm")
         busyTimes.append({'summary': item['summary'], 'start': item['start']['dateTime'], 'end': item['end']['dateTime'], 'formattedDate': formattedDate})

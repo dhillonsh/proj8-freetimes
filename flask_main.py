@@ -95,12 +95,15 @@ def selectcalendars():
     for calendar in request.form.getlist('calendarList[]'):
       eventList = gcal_service.events().list(calendarId=calendar, timeMin=flask.session['begin_date'], timeMax=flask.session['end_date']).execute()
       
+      print("Begin: " + begin_date)
+      print("End: " + end_date)
       for item in eventList['items']:
         if 'transparency' in item:
           continue
         itemStart = arrow.get(item['start']['dateTime'])
         itemEnd = arrow.get(item['end']['dateTime'])
         
+        print("ItemStart - " + itemStart.isoformat() + " | " + item['summary'] + " | " ('0' if itemStart < begin_date else '1'))
         if itemStart < begin_date or itemEnd > end_date:
           continue
         

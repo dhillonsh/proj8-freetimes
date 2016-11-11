@@ -9,7 +9,6 @@ import logging
 
 # Date handling 
 import arrow # Replacement for datetime, based on moment.js
-# import datetime # But we still need time
 from dateutil import tz  # For interpreting local times
 
 
@@ -26,10 +25,6 @@ from apiclient import discovery
 import CONFIG
 import secrets.admin_secrets  # Per-machine secrets
 import secrets.client_secrets # Per-application secrets
-#  Note to CIS 322 students:  client_secrets is what you turn in.
-#     You need an admin_secrets, but the grader and I don't use yours. 
-#     We use our own admin_secrets file along with your client_secrets
-#     file on our Raspberry Pis. 
 
 app = flask.Flask(__name__)
 app.debug=CONFIG.DEBUG
@@ -37,7 +32,7 @@ app.logger.setLevel(logging.DEBUG)
 app.secret_key=CONFIG.secret_key
 
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-CLIENT_SECRET_FILE = secrets.admin_secrets.google_key_file  ## You'll need this
+CLIENT_SECRET_FILE = secrets.admin_secrets.google_key_file
 APPLICATION_NAME = 'MeetMe class project'
 
 #############################
@@ -86,37 +81,22 @@ def selectcalendars():
     gcal_service = get_gcal_service(credentials)
     
     begin_time = arrow.get(flask.session['begin_time'])
-    begin_date = arrow.get(flask.session['begin_date']).replace(hour=begin_time.hour, minute=begin_time.minute)
-    
     end_time = arrow.get(flask.session['end_time'])
-    end_date = arrow.get(flask.session['end_date']).replace(hour=end_time.hour, minute=end_time.minute)
     
     busyTimes = []
     for calendar in request.form.getlist('calendarList[]'):
       eventList = gcal_service.events().list(calendarId=calendar, timeMin=flask.session['begin_date'], timeMax=flask.session['end_date']).execute()
-      
-      print("Begin: " + begin_date.isoformat())
-      print("End: " + end_date.isoformat())
+
       for item in eventList['items']:
         if 'transparency' in item:
           continue
-          
-        
-          
+
         itemStart = arrow.get(item['start']['dateTime'])
         itemEnd = arrow.get(item['end']['dateTime'])
-        
         begin_date = arrow.get(itemStart).replace(hour=begin_time.hour, minute=begin_time.minute)
         end_date = arrow.get(itemEnd).replace(hour=end_time.hour, minute=end_time.minute)
-        
-        print("ItemStart - " + itemStart.isoformat() + " | " + item['summary'] + " | ")
-        
-        #if (itemStart.hour < begin_time.hour) or (itemStart.hour == begin_time.hour and itemStart.minute < begin_time.minute) or itemEnd.hour > end_time.hour or (itemEnd.hour == end_time.hour and itemEnd.minute > begin_time.minute):
-        #  continue
-        #if (itemEnd.hour < begin_time.hour) or (itemEnd.hour == begin_time.hour and itemEnd.minute < begin_time.minute) or (itemStart.hour > 
         if itemEnd <= begin_date or itemStart >= end_date:
           continue
-        
         
         formattedDate = itemStart.format("ddd MM/DD/YYYY HH:mm") + " - " + itemEnd.format("HH:mm")
         busyTimes.append({'summary': item['summary'], 'start': item['start']['dateTime'], 'end': item['end']['dateTime'], 'formattedDate': formattedDate})
@@ -228,17 +208,6 @@ def oauth2callback():
     app.logger.debug("Got credentials")
     return flask.redirect(flask.url_for('choose'))
 
-#####
-#
-#  Option setting:  Buttons or forms that add some
-#     information into session state.  Don't do the
-#     computation here; use of the information might
-#     depend on what other information we have.
-#   Setting an option sends us back to the main display
-#      page, where we may put the new information to use. 
-#
-#####
-
 @app.route('/setrange', methods=['POST'])
 def setrange():
     """
@@ -275,7 +244,7 @@ def init_session_values():
     """
     app.logger.debug('--- In here')
     # Default date span = tomorrow to 1 week from now
-    now = arrow.now('local')     # We really should be using tz from browser
+    now = arrow.now('local')
     tomorrow = now.replace(days=+1)
     nextweek = now.replace(days=+7)
     flask.session["begin_date"] = tomorrow.floor('day').isoformat()

@@ -101,7 +101,7 @@ def selectcalendars():
         itemStart = arrow.get(item['start']['dateTime'])
         itemEnd = arrow.get(item['end']['dateTime'])
         
-        if itemStart > begin_date or itemEnd > end_date:
+        if itemStart < begin_date or itemEnd > end_date:
           continue
         
         formattedDate = itemStart.format("ddd MM/DD/YYYY HH:mm") + " - " + itemEnd.format("HH:mm")

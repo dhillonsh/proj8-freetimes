@@ -103,7 +103,7 @@ def selectcalendars():
         itemStart = arrow.get(item['start']['dateTime'])
         itemEnd = arrow.get(item['end']['dateTime'])
         
-        print("ItemStart - " + itemStart.isoformat() + " | " + item['summary'] + " | " ('0' if itemStart < begin_date else '1'))
+        print("ItemStart - " + itemStart.isoformat() + " | " + item['summary'] + " | ")
         if itemStart < begin_date or itemEnd > end_date:
           continue
         

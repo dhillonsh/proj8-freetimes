@@ -101,8 +101,8 @@ def selectcalendars():
         itemStart = arrow.get(item['start']['dateTime'])
         itemEnd = arrow.get(item['end']['dateTime'])
         
-        #if itemStart > begin_date or itemEnd > end_date:
-        #  continue
+        if itemStart > begin_date or itemEnd > end_date:
+          continue
         
         formattedDate = itemStart.format("ddd MM/DD/YYYY HH:mm") + " - " + itemEnd.format("HH:mm")
         busyTimes.append({'summary': item['summary'], 'start': item['start']['dateTime'], 'end': item['end']['dateTime'], 'formattedDate': formattedDate})

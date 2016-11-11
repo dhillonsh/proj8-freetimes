@@ -93,13 +93,20 @@ def selectcalendars():
     
     busyTimes = []
     for calendar in request.form.getlist('calendarList[]'):
-      eventList = gcal_service.events().list(calendarId=calendar, timeMin=begin_date.isoformat(), timeMax=end_date.isoformat()).execute()
-
+      #eventList = gcal_service.events().list(calendarId=calendar, timeMin=begin_date.isoformat(), timeMax=end_date.isoformat()).execute()
+      eventList = gcal_service.events().list(calendarId=calendar).execute()
+      
       for item in eventList['items']:
         if 'transparency' in item:
           continue
-        formattedDate = arrow.get(item['start']['dateTime']).format("ddd MM/DD/YYYY HH:mm") + " - " + arrow.get(item['end']['dateTime']).format("HH:mm")
-        busyTimes.append({'summary': item['summary'], 'start': item['start']['dateTime'], 'end': item['end']['dateTime'], 'formattedDate': formattedDate})
+        itemStart = arrow.get(item['start']['dateTime'])
+        itemEnd = arrow.get(item['end']['dateTime'])
+        
+        if itemStart > begin_date or itemEnd > end_date:
+          continue
+        
+        formattedDate = itemStart.format("ddd MM/DD/YYYY HH:mm") + " - " + itemEnd.format("HH:mm")
+        busyTimes.append({'summary': item['summary'], 'start': itemStart, 'end': itemEnd, 'formattedDate': formattedDate})
     flask.g.busyEvents = sorted(busyTimes, key=lambda k: k['start'])
     app.logger.debug("Returned from get_gcal_service")
     return render_template('index.html')

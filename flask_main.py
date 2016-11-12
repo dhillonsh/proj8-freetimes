@@ -262,6 +262,10 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
       print('NO TIME SECTION: [' + event['summary'] + ']')
     cur_time = event_end
     fullAgenda.append(event)
+
+  if cur_time < end_date:
+    fullAgenda.append({'summary': 'Available', 'start': cur_time.isoformat(), 'end': end_date.isoformat(), 'formattedDate': cur_time.isoformat() + ' - ' + end_date.isoformat()})
+      
   return fullAgenda
   
 def init_session_values():

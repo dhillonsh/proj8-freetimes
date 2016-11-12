@@ -100,7 +100,9 @@ def selectcalendars():
         
         formattedDate = itemStart.format("ddd MM/DD/YYYY HH:mm") + " - " + itemEnd.format("HH:mm")
         busyTimes.append({'summary': item['summary'], 'start': item['start']['dateTime'], 'end': item['end']['dateTime'], 'formattedDate': formattedDate})
-    flask.g.busyEvents = sorted(busyTimes, key=lambda k: k['start'])
+    busyTimes = sorted(busyTimes, key=lambda k: k['start'])
+    fullAgenda = agenda(flask.session['begin_date'], flask.session['end_date'], flask.session['begin_time'], flask.session['end_time'], busyTimes)
+    flask.g.busyEvents = fullAgenda
     app.logger.debug("Returned from get_gcal_service")
     return render_template('index.html')
 ####
@@ -237,6 +239,10 @@ def setrange():
 #
 ####
 
+def agenda(startDay, endDay, startTime, endTime, busyList):
+  print("---")
+  return busyList
+  
 def init_session_values():
     """
     Start with some reasonable defaults for date and time ranges.

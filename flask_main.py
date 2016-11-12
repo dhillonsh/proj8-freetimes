@@ -241,6 +241,13 @@ def setrange():
 
 def agenda(startDay, endDay, startTime, endTime, busyList):
   print("---")
+  begin_time = arrow.get(startTime)
+  end_time = arrow.get(endTime)
+  begin_date = arrow.get(startDay).replace(hour=begin_time.hour, minute=begin_time.minute)
+  end_date = arrow.get(endDay).replace(hour=end_time.hour, minute=end_time.minute)
+  
+  print(begin_date.isoformat())
+  print(end_date.isoformat())
   return busyList
   
 def init_session_values():

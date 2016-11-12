@@ -248,7 +248,20 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
   
   print(begin_date.isoformat())
   print(end_date.isoformat())
-  return busyList
+  cur_time = begin_date
+  
+  fullAgenda = []
+  for event in busyList:
+    event_start = arrow.get(event['start'])
+    event_end = arrow.get(event['end'])
+    
+    if cur_time < event_start:
+      print('Time section here for [' + event['summary'] + ']')
+    else:
+      print('NO TIME SECTION: [' + event['summary'] + ']')
+    cur_time = event_end
+    fullAgenda.push(event)
+  return fullAgenda
   
 def init_session_values():
     """

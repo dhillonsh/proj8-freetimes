@@ -260,7 +260,7 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
     else:
       print('NO TIME SECTION: [' + event['summary'] + ']')
     cur_time = event_end
-    fullAgenda.push(event)
+    fullAgenda.append(event)
   return fullAgenda
   
 def init_session_values():

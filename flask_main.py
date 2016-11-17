@@ -267,7 +267,7 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
 
   while cur_time < end_date:
     #if cur_time is past the end time
-    fullAgenda.append({'summary': 'Available', 'start': cur_time.isoformat(), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute), 'formattedDate': cur_time.isoformat() + ' - ' + end_date.isoformat()})
+    fullAgenda.append({'summary': 'Available', 'start': cur_time.isoformat(), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat(), 'formattedDate': cur_time.isoformat() + ' - ' + end_date.isoformat()})
     cur_time = cur_time.replace(days=+1)
       
   return fullAgenda

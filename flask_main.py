@@ -85,7 +85,7 @@ def selectcalendars():
     
     busyTimes = []
     for calendar in request.form.getlist('calendarList[]'):
-      eventList = gcal_service.events().list(calendarId=calendar, timeMin=flask.session['begin_date'], timeMax=flask.session['end_date']).execute()
+      eventList = gcal_service.events().list(calendarId=calendar, timeMin=flask.session['begin_date'], timeMax=flask.session['end_date'], singleEvents=True, orderBy='startTime').execute()
 
       for item in eventList['items']:
         if 'transparency' in item:

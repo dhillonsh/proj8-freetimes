@@ -256,6 +256,8 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
     event_end = arrow.get(event['end'])
     
     if cur_time < event_start:
+      print("Cur_time: " + cur_time.isoformat())
+      print("Event_Start: " + event_start.isoformat())
       fullAgenda.append({'summary': 'Available', 'start': cur_time.isoformat(), 'end': event_start.isoformat(), 'formattedDate': cur_time.isoformat() + ' - ' + event_start.isoformat()})
       print('Time section here for [' + event['summary'] + ']')
     else:

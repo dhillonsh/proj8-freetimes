@@ -100,7 +100,7 @@ From: <input type="time" name="fromTime" id="fromTime" value="{{ session.timeran
 	
 </form>
 
-{% if g.calendars is defined and g.busyEvents is not defined%}
+{% if g.calendars is defined and g.busyEvents is defined%}
 	<h3>Select Busy Calendars</h3>
 <form action="/selectcalendars" method="post">
   <div class="row">

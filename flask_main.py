@@ -68,7 +68,8 @@ def choose():
 
     gcal_service = get_gcal_service(credentials)
     app.logger.debug("Returned from get_gcal_service")
-    flask.g.calendars = list_calendars(gcal_service)
+    flask.session['calendarList'] = list_calendars(gcal_service)
+    flask.g.calendars = flask.session['calendarList']
 
     return render_template('index.html')
 
@@ -103,6 +104,7 @@ def selectcalendars():
     busyTimes = sorted(busyTimes, key=lambda k: k['start'])
     fullAgenda = agenda(flask.session['begin_date'], flask.session['end_date'], flask.session['begin_time'], flask.session['end_time'], busyTimes)
     flask.g.busyEvents = fullAgenda
+    flask.g.calendars = flask.session['calendarList']
     app.logger.debug("Returned from get_gcal_service")
     return render_template('index.html')
 ####
@@ -240,16 +242,12 @@ def setrange():
 ####
 
 def agenda(startDay, endDay, startTime, endTime, busyList):
-  print("---")
   begin_time = arrow.get(startTime)
   end_time = arrow.get(endTime)
   begin_date = arrow.get(startDay).replace(hour=begin_time.hour, minute=begin_time.minute)
   end_date = arrow.get(endDay).replace(hour=end_time.hour, minute=end_time.minute)
-  
-  print(begin_date.isoformat())
-  print(end_date.isoformat())
+
   cur_time = begin_date
-  
   fullAgenda = []
   for event in busyList:
     event_start = arrow.get(event['start'])
@@ -259,14 +257,13 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
       while cur_time < event_start.replace(hour=begin_time.hour,minute=begin_time.minute):
         if cur_time < cur_time.replace(hour=end_time.hour, minute=end_time.minute):
           fullAgenda.append({'summary': 'Available', 'start': cur_time.isoformat().format("ddd MM/DD/YYYY HH:mm"), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat(), 'formattedDate': cur_time.format("ddd MM/DD/YYYY HH:mm") + ' - ' + cur_time.replace(hour=end_time.hour, minute=end_time.minute).format("ddd MM/DD/YYYY HH:mm")})
-        print("Cur_time: " + cur_time.isoformat())
-        print("Event_Start: " + event_start.isoformat())
-        print('Time section here for [' + event['summary'] + ']')
+
         cur_time = cur_time.replace(hour=begin_time.hour, minute=begin_time.minute,days=+1)
       fullAgenda.append({'summary': 'Available', 'start': cur_time.isoformat().format("ddd MM/DD/YYYY HH:mm"), 'end': event_start.isoformat(), 'formattedDate': cur_time.format("ddd MM/DD/YYYY HH:mm") + ' - ' + event_start.format("ddd MM/DD/YYYY HH:mm")})        
     cur_time = event_end
     fullAgenda.append(event)
 
+  #Fill in the days after the last event as available
   while cur_time < end_date:
     if cur_time < cur_time.replace(hour=end_time.hour, minute=end_time.minute):
       fullAgenda.append({'summary': 'Available', 'start': cur_time.isoformat().format("ddd MM/DD/YYYY HH:mm"), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat(), 'formattedDate': cur_time.format("ddd MM/DD/YYYY HH:mm") + ' - ' + cur_time.replace(hour=end_time.hour, minute=end_time.minute).format("ddd MM/DD/YYYY HH:mm")})

@@ -5,9 +5,9 @@
 ---
 
 ### Purpose ###
-* This application is for Project 7 of CIS 322 at University of Oregon.
+* This application is for Project 8 of CIS 322 at University of Oregon.
 * The purpose was to get an introduction with Google's Calendar API.
-* This is a mini-project that displays all the busy times within a given date/time range.
+* This is a mini-project that displays all the busy times within a given date/time range as well as available times.
 
 ### Application Specifics ###
 * The main [index](/templates/index.html) displays all the calendar information
@@ -27,4 +27,7 @@
 * The default port is 5000, so the webserver should be reachable at http://localhost:5000 , and also through its IP address.
  
 ### Testing the Application ###
-* There are no tests for this application.
+* There are nosetests for this application that can be run with:
+  * `cd <targetDirectory>`
+  * `. env/bin/activate`
+  * `nosetests`

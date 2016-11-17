@@ -258,7 +258,7 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
     if cur_time < event_start:
       print("Cur_time: " + cur_time.isoformat())
       print("Event_Start: " + event_start.isoformat())
-      fullAgenda.append({'summary': 'Available', 'start': cur_time.isoformat(), 'end': event_start.isoformat(), 'formattedDate': cur_time.isoformat() + ' - ' + event_start.isoformat()})
+      fullAgenda.append({'summary': 'Available', 'start': cur_time.isoformat().format("ddd MM/DD/YYYY HH:mm"), 'end': event_start.isoformat(), 'formattedDate': cur_time.format("ddd MM/DD/YYYY HH:mm") + ' - ' + event_start.format("ddd MM/DD/YYYY HH:mm")})
       print('Time section here for [' + event['summary'] + ']')
     else:
       print('NO TIME SECTION: [' + event['summary'] + ']')
@@ -267,7 +267,7 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
 
   while cur_time < end_date:
     #if cur_time is past the end time
-    fullAgenda.append({'summary': 'Available', 'start': cur_time.isoformat(), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat(), 'formattedDate': cur_time.isoformat() + ' - ' + end_date.isoformat()})
+    fullAgenda.append({'summary': 'Available', 'start': cur_time.isoformat().format("ddd MM/DD/YYYY HH:mm"), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat(), 'formattedDate': cur_time.isoformat().format("ddd MM/DD/YYYY HH:mm") + ' - ' + cur_time.replace(hour=end_time.hour, minute=end_time.minute).format("ddd MM/DD/YYYY HH:mm")})
     cur_time = cur_time.replace(days=+1)
       
   return fullAgenda

@@ -120,7 +120,7 @@ def test_eventPastBoundaries():
   
   busyList = [{'summary': 'randomEvent1', 'start': "2016-11-17T07:30:00:00", 'end': "2016-11-17T08:30:00:00"}, {'summary': 'randomEvent2', 'start': "2016-11-17T16:30:00:00", 'end': "2016-11-17T17:30:00:00"}]
   earlyAndLateEvents = agenda("2016-11-17","2016-11-17","2016-11-17T08:00:00:00", "2016-11-17T17:00:00:00", busyList)
-  assert len(earlyAndLateEvents) == 2
+  assert len(earlyAndLateEvents) == 3
   assert arrow.get(earlyEvent[0]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 07:30"
   assert arrow.get(earlyEvent[0]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:30"
   assert earlyEvent[0]['summary'] == 'randomEvent1'

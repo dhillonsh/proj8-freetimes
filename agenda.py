@@ -29,7 +29,7 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
   while cur_time < end_date:
     if cur_time < cur_time.replace(hour=end_time.hour, minute=end_time.minute):
       toAppend = {'summary': 'Available', 'start': cur_time.isoformat(), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat()}
-      toAppend = formatDates(cur_time.isoformat(), cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat())
+      toAppend['formattedDate'] = formatDates(cur_time.isoformat(), cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat())
       fullAgenda.append(toAppend)
     cur_time = cur_time.replace(hour=begin_time.hour, minute=begin_time.minute,days=+1)
   return fullAgenda

@@ -93,3 +93,41 @@ def test_noFreeTime():
   assert arrow.get(twoAllDayEvents[1]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 11:00"
   assert arrow.get(twoAllDayEvents[1]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 17:00"
   assert twoAllDayEvents[1]['summary'] == 'randomEvent2'
+
+def test_eventPastBoundaries():
+  #Event starts 30 minutes before start time and ends 30 minutes after start time
+  busyList = [{'summary': 'randomEvent', 'start': "2016-11-17T07:30:00:00", 'end': "2016-11-17T08:30:00:00"}]
+  earlyEvent = agenda("2016-11-17","2016-11-17","2016-11-17T08:00:00:00", "2016-11-17T17:00:00:00", busyList)
+  assert len(earlyEvent) == 2
+  assert arrow.get(earlyEvent[0]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 07:30"
+  assert arrow.get(earlyEvent[0]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:30"
+  assert earlyEvent[0]['summary'] == 'randomEvent'
+  assert arrow.get(earlyEvent[1]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:30"
+  assert arrow.get(earlyEvent[1]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 11:00"
+  assert earlyEvent[1]['summary'] == 'Available'
+  
+  #Event start 30 minutes before end time and ends 30 minutes after end time
+  busyList = [{'summary': 'randomEvent', 'start': "2016-11-17T16:30:00:00", 'end': "2016-11-17T17:30:00:00"}]
+  lateEvent = agenda("2016-11-17","2016-11-17","2016-11-17T08:00:00:00", "2016-11-17T17:00:00:00", busyList)
+  assert len(lateEvent) == 2
+  assert arrow.get(lateEvent[0]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:00"
+  assert arrow.get(lateEvent[0]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 16:30"
+  assert lateEvent[0]['summary'] == 'Available'
+  assert arrow.get(lateEvent[1]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 16:30"
+  assert arrow.get(lateEvent[1]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 17:30"
+  assert lateEvent[1]['summary'] == 'randomEvent'
+  
+  
+  busyList = [{'summary': 'randomEvent1', 'start': "2016-11-17T07:30:00:00", 'end': "2016-11-17T08:30:00:00"}, {'summary': 'randomEvent2', 'start': "2016-11-17T16:30:00:00", 'end': "2016-11-17T17:30:00:00"}]
+  earlyAndLateEvents = agenda("2016-11-17","2016-11-17","2016-11-17T08:00:00:00", "2016-11-17T17:00:00:00", busyList)
+  assert len(earlyAndLateEvents) == 2
+  assert arrow.get(earlyEvent[0]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 07:30"
+  assert arrow.get(earlyEvent[0]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:30"
+  assert earlyEvent[0]['summary'] == 'randomEvent1'
+  assert arrow.get(earlyAndLateEvents[1]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:30"
+  assert arrow.get(earlyAndLateEvents[1]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 16:30"
+  assert earlyAndLateEvents[1]['summary'] == 'Available'
+  assert arrow.get(earlyAndLateEvents[2]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 16:30"
+  assert arrow.get(earlyAndLateEvents[2]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 17:30"
+  assert earlyAndLateEvents[2]['summary'] == 'randomEvent2'
+    

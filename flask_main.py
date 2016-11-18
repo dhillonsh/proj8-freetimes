@@ -101,16 +101,15 @@ def selectcalendars():
         end_date = arrow.get(itemEnd).replace(hour=end_time.hour, minute=end_time.minute)
         if itemEnd <= begin_date or itemStart >= end_date:
           continue
-        print("Here")
+
         toAppend = {'summary': item['summary'], 'start': item['start']['dateTime'], 'end': item['end']['dateTime']}
         toAppend['formattedDate'] = formatDates(arrow.get(toAppend['start']).isoformat(), arrow.get(toAppend['end']).isoformat())
         busyTimes.append(toAppend)
-        print(item['start']['dateTime'])
-        print("We out now")                  
+              
     busyTimes = sorted(busyTimes, key=lambda k: k['start'])
     fullAgenda = agenda(flask.session['begin_date'], flask.session['end_date'], flask.session['begin_time'], flask.session['end_time'], busyTimes)
     flask.g.busyEvents = fullAgenda
-    print(fullAgenda)
+
     flask.g.calendars = flask.session['calendarList']
     app.logger.debug("Returned from get_gcal_service")
     return render_template('index.html')

@@ -105,6 +105,7 @@ def selectcalendars():
         toAppend = {'summary': item['summary'], 'start': item['start']['dateTime'], 'end': item['end']['dateTime']}
         toAppend['formattedDate'] = formatDates(arrow.get(toAppend['start']).isoformat(), arrow.get(toAppend['end']).isoformat())
         busyTimes.append(toAppend)
+        print(item['start']['dateTime'])
         print("We out now")                  
     busyTimes = sorted(busyTimes, key=lambda k: k['start'])
     fullAgenda = agenda(flask.session['begin_date'], flask.session['end_date'], flask.session['begin_time'], flask.session['end_time'], busyTimes)

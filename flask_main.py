@@ -110,6 +110,7 @@ def selectcalendars():
     busyTimes = sorted(busyTimes, key=lambda k: k['start'])
     fullAgenda = agenda(flask.session['begin_date'], flask.session['end_date'], flask.session['begin_time'], flask.session['end_time'], busyTimes)
     flask.g.busyEvents = fullAgenda
+    print(fullAgenda)
     flask.g.calendars = flask.session['calendarList']
     app.logger.debug("Returned from get_gcal_service")
     return render_template('index.html')

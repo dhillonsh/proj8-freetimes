@@ -15,11 +15,11 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
     if cur_time < event_start:
       while cur_time < event_start.replace(hour=begin_time.hour,minute=begin_time.minute):
         if cur_time < cur_time.replace(hour=end_time.hour, minute=end_time.minute):
-          toAppend = {'summary': 'Available', 'start': cur_time.isoformat(), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute)}
+          toAppend = {'summary': 'Available', 'start': cur_time.format("ddd MM/DD/YYYY HH:mm"), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute).format("ddd MM/DD/YYYY HH:mm")}
           toAppend['formattedDate'] = formatDates(toAppend['start'], toAppend['end'])
           fullAgenda.append(toAppend)
         cur_time = cur_time.replace(hour=begin_time.hour, minute=begin_time.minute,days=+1)
-      toAppend = {'summary': 'Available', 'start': cur_time.isoformat(), 'end': event_start.isoformat()}
+      toAppend = {'summary': 'Available', 'start': cur_time.format("ddd MM/DD/YYYY HH:mm"), 'end': event_start.format("ddd MM/DD/YYYY HH:mm")}
       toAppend['formattedDate'] = formatDates(toAppend['start'], toAppend['end'])
       fullAgenda.append(toAppend)
     cur_time = event_end
@@ -28,11 +28,10 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
   #Fill in the days after the last event as available
   while cur_time < end_date:
     if cur_time < cur_time.replace(hour=end_time.hour, minute=end_time.minute):
-      toAppend = {'summary': 'Available', 'start': cur_time.isoformat(), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat()}
+      toAppend = {'summary': 'Available', 'start': cur_time.format("ddd MM/DD/YYYY HH:mm"), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute).format("ddd MM/DD/YYYY HH:mm")}
       toAppend = formatDates(toAppend['start'], toAppend['end'])
       fullAgenda.append(toAppend)
     cur_time = cur_time.replace(hour=begin_time.hour, minute=begin_time.minute,days=+1)
-  print(fullAgenda)
   return fullAgenda
 
 def formatDates(startDate, endDate):

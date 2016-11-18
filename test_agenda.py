@@ -77,7 +77,7 @@ def test_multipleEventsSingleDay():
 def test_noFreeTime():
   #Single Event, all day
   busyList = [{'summary': 'randomEvent1', 'start': "2016-11-17T08:00:00:00", 'end': "2016-11-17T17:00:00:00"}]
-  allDayEvent = agenda("2016-11-17","2016-11-17","2016-11-17T08:00:00:00", "2016-11-17T17:00:00:00", busyList)
+  singleAllDayEvent = agenda("2016-11-17","2016-11-17","2016-11-17T08:00:00:00", "2016-11-17T17:00:00:00", busyList)
   assert len(allDayEvent) == 1
   assert arrow.get(allDayEvent[0]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:00"
   assert arrow.get(allDayEvent[0]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 17:00"
@@ -85,10 +85,11 @@ def test_noFreeTime():
   
   #Two events, all day
   busyList = [{'summary': 'randomEvent1', 'start': "2016-11-17T08:00:00:00", 'end': "2016-11-17T11:00:00:00"}, {'summary': 'randomEvent2', 'start': "2016-11-17T11:00:00:00", 'end': "2016-11-17T17:00:00:00"}]
-  assert len(allDayEvent) == 2
-  assert arrow.get(allDayEvent[0]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:00"
-  assert arrow.get(allDayEvent[0]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 11:00"
-  assert allDayEvent[0]['summary'] == 'randomEvent1'
-  assert arrow.get(allDayEvent[1]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 11:00"
-  assert arrow.get(allDayEvent[1]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 17:00"
-  assert allDayEvent[1]['summary'] == 'randomEvent2'
+  twoAllDayEvents = agenda("2016-11-17","2016-11-17","2016-11-17T08:00:00:00", "2016-11-17T17:00:00:00", busyList)
+  assert len(twoAllDayEvents) == 2
+  assert arrow.get(twoAllDayEvents[0]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:00"
+  assert arrow.get(twoAllDayEvents[0]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 11:00"
+  assert twoAllDayEvents[0]['summary'] == 'randomEvent1'
+  assert arrow.get(twoAllDayEvents[1]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 11:00"
+  assert arrow.get(twoAllDayEvents[1]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 17:00"
+  assert twoAllDayEvents[1]['summary'] == 'randomEvent2'

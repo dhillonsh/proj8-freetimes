@@ -73,3 +73,4 @@ def test_singleEvent():
     assert arrow.get(randomEvents[3]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 15:00"
     assert arrow.get(randomEvents[3]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 17:00"
     assert randomEvents[3]['summary'] == 'Available'
+    print("done")

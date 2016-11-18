@@ -35,7 +35,9 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
   return fullAgenda
 
 def formatDates(startDate, endDate):
+  print(startDate)
   startOBJ = arrow.get(startDate, "ddd MM/DD/YYYY HH:mm")
+  print("Here")
   endOBJ = arrow.get(endDate, "ddd MM/DD/YYYY HH:mm")
   if startOBJ.format("ddd MM/DD/YYYY") == endOBJ.format("ddd MM/DD/YYYY"):
     return startOBJ.format("ddd MM/DD/YYYY") + ": " + startOBJ.format("HH:mm") + " - " + endOBJ.format("HH:mm")

@@ -17,14 +17,14 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
         if cur_time < cur_time.replace(hour=end_time.hour, minute=end_time.minute):
           fullAgenda.append({'summary': 'Available', 'formattedDate': formatDates(cur_time.isoformat(), cur_time.replace(hour=end_time.hour, minute=end_time.minute))})
         cur_time = cur_time.replace(hour=begin_time.hour, minute=begin_time.minute,days=+1)
-      fullAgenda.append({'summary': 'Available', 'formattedDate': formatDates(cur_time.isoformat(), event_start.isoformat())
+      fullAgenda.append({'summary': 'Available', 'formattedDate': formatDates(cur_time.isoformat(), event_start.isoformat())})
     cur_time = event_end
     fullAgenda.append(event)
 
   #Fill in the days after the last event as available
   while cur_time < end_date:
     if cur_time < cur_time.replace(hour=end_time.hour, minute=end_time.minute):
-      fullAgenda.append({'summary': 'Available', 'formattedDate': formatDates(cur_time.isoformat(), cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat()))
+      fullAgenda.append({'summary': 'Available', 'formattedDate': formatDates(cur_time.isoformat(), cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat())})
     cur_time = cur_time.replace(hour=begin_time.hour, minute=begin_time.minute,days=+1)
       
   return fullAgenda

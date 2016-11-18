@@ -58,7 +58,7 @@ def test_singleEvent():
   assert middleDayEvent[2]['summary'] == 'Available'
 
 def test_multipleEventsSingleDay():
-  busyList = [{'summary': 'randomEvent1', 'start': "2016-11-17T08:00:00:00", 'end': "2016-11-17T08:30:00:00"}, {'summary': 'randomEvent2', 'start': "2016-11-17T13:00:00:00", 'end': "2016-11-17T15:00:00:00"}]
+  busyList = [{'summary': 'randomEvent1', 'start': "2016-11-17T08:00:00:00", 'end': "2016-11-17T08:30:00:00"}, {'summary': 'randomEvent2', 'start': "2016-11-17T13:21:00:00", 'end': "2016-11-17T15:55:00:00"}]
   randomEvents = agenda("2016-11-17","2016-11-17","2016-11-17T08:00:00:00", "2016-11-17T17:00:00:00", busyList)
   assert len(randomEvents) == 4
   assert arrow.get(randomEvents[0]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:00"
@@ -67,10 +67,28 @@ def test_multipleEventsSingleDay():
   assert arrow.get(randomEvents[1]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:30"
   assert arrow.get(randomEvents[1]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 13:00"
   assert randomEvents[1]['summary'] == 'Available'
-  assert arrow.get(randomEvents[2]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 13:00"
-  assert arrow.get(randomEvents[2]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 15:00"
+  assert arrow.get(randomEvents[2]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 13:21"
+  assert arrow.get(randomEvents[2]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 15:55"
   assert randomEvents[2]['summary'] == 'randomEvent2'
-  assert arrow.get(randomEvents[3]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 15:00"
+  assert arrow.get(randomEvents[3]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 15:55"
   assert arrow.get(randomEvents[3]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 17:00"
   assert randomEvents[3]['summary'] == 'Available'
-  print("done")
+
+def test_noFreeTime():
+  #Single Event, all day
+  busyList = [{'summary': 'randomEvent1', 'start': "2016-11-17T08:00:00:00", 'end': "2016-11-17T17:00:00:00"}]
+  allDayEvent = agenda("2016-11-17","2016-11-17","2016-11-17T08:00:00:00", "2016-11-17T17:00:00:00", busyList)
+  assert len(allDayEvent) == 1
+  assert arrow.get(allDayEvent[0]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:00"
+  assert arrow.get(allDayEvent[0]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 17:00"
+  assert allDayEvent[0]['summary'] == 'randomEvent1'
+  
+  #Two events, all day
+  busyList = [{'summary': 'randomEvent1', 'start': "2016-11-17T08:00:00:00", 'end': "2016-11-17T11:00:00:00"}, {'summary': 'randomEvent2', 'start': "2016-11-17T11:00:00:00", 'end': "2016-11-17T17:00:00:00"}]
+  assert len(allDayEvent) == 2
+  assert arrow.get(allDayEvent[0]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:00"
+  assert arrow.get(allDayEvent[0]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 11:00"
+  assert allDayEvent[0]['summary'] == 'randomEvent1'
+  assert arrow.get(allDayEvent[1]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 11:00"
+  assert arrow.get(allDayEvent[1]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 17:00"
+  assert allDayEvent[1]['summary'] == 'randomEvent2'

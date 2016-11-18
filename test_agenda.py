@@ -31,5 +31,14 @@ def test_singleEvent():
   assert startDayEvent[1]['summary'] == 'Available'
 
   #Event at the end of the day and time
+  endDayEvent = agenda("2016-11-17","2016-11-17","2016-11-17T08:00:00:00", "2016-11-17T17:00:00:00", busyList)
+  assert len(endDayEvent) == 2
+  assert arrow.get(endDayEvent[0]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:00"
+  assert arrow.get(endDayEvent[0]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 16:30"
+  assert endDayEvent[0]['summary'] == 'Available'
+  assert arrow.get(endDayEvent[1]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 16:30"
+  assert arrow.get(endDayEvent[1]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 17:00"
+  assert endDayEvent[1]['summary'] == 'randomEvent'
+  
   
   #Event in the middle of a day

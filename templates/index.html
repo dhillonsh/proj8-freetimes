@@ -120,7 +120,7 @@ From: <input type="time" name="fromTime" id="fromTime" value="{{ session.timeran
 {% if g.busyEvents is defined  %}
 	<h3>Busy Times:</h3>
   {% for busyEvent in g.busyEvents %}
-  <div class="row">
+  <div class="row" style="color:{% if busyEvent.summary == "Available" %}green{% else %}red{% endif %};">
 	<div class="col-md-4">
 		{{ busyEvent.formattedDate }}
 	  </div>

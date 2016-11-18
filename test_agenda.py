@@ -123,7 +123,7 @@ def test_eventPastBoundaries():
   assert len(earlyAndLateEvents) == 3
   assert arrow.get(earlyEvent[0]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 07:30"
   assert arrow.get(earlyEvent[0]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:30"
-  assert earlyEvent[0]['summary'] == 'randomEvent1'
+  assert earlyAndLateEvents[0]['summary'] == 'randomEvent1'
   assert arrow.get(earlyAndLateEvents[1]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:30"
   assert arrow.get(earlyAndLateEvents[1]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 16:30"
   assert earlyAndLateEvents[1]['summary'] == 'Available'

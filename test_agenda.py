@@ -67,7 +67,7 @@ def test_multipleEventsSingleDay():
   assert arrow.get(randomEvents[1]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:30"
   assert arrow.get(randomEvents[1]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 13:00"
   assert randomEvents[1]['summary'] == 'Available'
-  assert arrow.get(randomEvents[2]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 13:30"
+  assert arrow.get(randomEvents[2]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 13:00"
   assert arrow.get(randomEvents[2]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 15:00"
   assert randomEvents[2]['summary'] == 'randomEvent2'
   assert arrow.get(randomEvents[3]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 15:00"

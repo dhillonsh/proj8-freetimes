@@ -102,8 +102,10 @@ def selectcalendars():
         if itemEnd <= begin_date or itemStart >= end_date:
           continue
         
-        formattedDate = itemStart.format("ddd MM/DD/YYYY HH:mm") + " - " + itemEnd.format("HH:mm")
-        busyTimes.append({'summary': item['summary'], 'start': item['start']['dateTime'], 'end': item['end']['dateTime'], 'formattedDate': formattedDate})
+        toAppend = {'summary': item['summary'], 'start': item['start']['dateTime'], 'end': item['end']['dateTime']}
+        toAppend['formattedDate'] = formatDates(toAppend['start'], toAppend['end'])
+        busyTimes.append(toAppend)
+                          
     busyTimes = sorted(busyTimes, key=lambda k: k['start'])
     fullAgenda = agenda(flask.session['begin_date'], flask.session['end_date'], flask.session['begin_time'], flask.session['end_time'], busyTimes)
     flask.g.busyEvents = fullAgenda

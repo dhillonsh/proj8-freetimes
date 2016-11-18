@@ -1,5 +1,5 @@
-import arrow
 from agenda import *
+import arrow
 
 
 def test_empty():

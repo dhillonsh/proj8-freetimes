@@ -16,11 +16,11 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
       while cur_time < event_start.replace(hour=begin_time.hour,minute=begin_time.minute):
         if cur_time < cur_time.replace(hour=end_time.hour, minute=end_time.minute):
           toAppend = {'summary': 'Available', 'start': cur_time.format("ddd MM/DD/YYYY HH:mm"), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute).format("ddd MM/DD/YYYY HH:mm")}
-          toAppend['formattedDate'] = formatDates(toAppend['start'], toAppend['end'])
+          toAppend['formattedDate'] = formatDates(cur_time.isoformat(), cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat())
           fullAgenda.append(toAppend)
         cur_time = cur_time.replace(hour=begin_time.hour, minute=begin_time.minute,days=+1)
       toAppend = {'summary': 'Available', 'start': cur_time.format("ddd MM/DD/YYYY HH:mm"), 'end': event_start.format("ddd MM/DD/YYYY HH:mm")}
-      toAppend['formattedDate'] = formatDates(toAppend['start'], toAppend['end'])
+      toAppend['formattedDate'] = formatDates(cur_time.isoformat(), event_start.isoformat())
       fullAgenda.append(toAppend)
     cur_time = event_end
     fullAgenda.append(event)
@@ -29,7 +29,7 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
   while cur_time < end_date:
     if cur_time < cur_time.replace(hour=end_time.hour, minute=end_time.minute):
       toAppend = {'summary': 'Available', 'start': cur_time.format("ddd MM/DD/YYYY HH:mm"), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute).format("ddd MM/DD/YYYY HH:mm")}
-      toAppend = formatDates(toAppend['start'], toAppend['end'])
+      toAppend = formatDates(cur_time.isoformat(), cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat())
       fullAgenda.append(toAppend)
     cur_time = cur_time.replace(hour=begin_time.hour, minute=begin_time.minute,days=+1)
   return fullAgenda
@@ -37,8 +37,8 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
 def formatDates(startDate, endDate):
   print(startDate)
   print(endDate)
-  startOBJ = arrow.get(startDate, 'ddd MM/DD/YYYY HH:mm')
-  endOBJ = arrow.get(endDate, 'ddd MM/DD/YYYY HH:mm')
+  startOBJ = arrow.get(startDate)
+  endOBJ = arrow.get(endDate)
   if startOBJ.format("ddd MM/DD/YYYY") == endOBJ.format("ddd MM/DD/YYYY"):
     return startOBJ.format("ddd MM/DD/YYYY") + ": " + startOBJ.format("HH:mm") + " - " + endOBJ.format("HH:mm")
   return startOBJ.format("ddd MM/DD/YYYY HH:mm") + ' - ' + endOBJ.format("ddd MM/DD/YYYY HH:mm")   

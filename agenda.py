@@ -37,8 +37,8 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
 def formatDates(startDate, endDate):
   print(startDate)
   print(endDate)
-  startOBJ = arrow.get(startDate, "ddd MM/DD/YYYY HH:mm")
-  endOBJ = arrow.get(endDate, "ddd MM/DD/YYYY HH:mm")
+  startOBJ = arrow.get(startDate, 'ddd MM/DD/YYYY HH:mm')
+  endOBJ = arrow.get(endDate, 'ddd MM/DD/YYYY HH:mm')
   if startOBJ.format("ddd MM/DD/YYYY") == endOBJ.format("ddd MM/DD/YYYY"):
     return startOBJ.format("ddd MM/DD/YYYY") + ": " + startOBJ.format("HH:mm") + " - " + endOBJ.format("HH:mm")
   return startOBJ.format("ddd MM/DD/YYYY HH:mm") + ' - ' + endOBJ.format("ddd MM/DD/YYYY HH:mm")   

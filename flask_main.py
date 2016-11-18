@@ -103,7 +103,7 @@ def selectcalendars():
           continue
         print("Here")
         toAppend = {'summary': item['summary'], 'start': item['start']['dateTime'], 'end': item['end']['dateTime']}
-        toAppend['formattedDate'] = formatDates(begin_date.isoformat(), end_date.isoformat())
+        toAppend['formattedDate'] = formatDates(arrow.get(toAppend['start']).isoformat(), arrow.get(toAppend['end']).isoformat())
         busyTimes.append(toAppend)
         print("We out now")                  
     busyTimes = sorted(busyTimes, key=lambda k: k['start'])

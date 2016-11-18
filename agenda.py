@@ -1,4 +1,3 @@
-import arrow
 
 def agenda(startDay, endDay, startTime, endTime, busyList):
   begin_time = arrow.get(startTime)
@@ -13,6 +12,7 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
     event_end = arrow.get(event['end'])
     
     if cur_time < event_start:
+      #While there is a gap from now to the next event. Iterate through days until next event
       while cur_time < event_start.replace(hour=begin_time.hour,minute=begin_time.minute):
         if cur_time < cur_time.replace(hour=end_time.hour, minute=end_time.minute):
           toAppend = {'summary': 'Available', 'start': cur_time.isoformat(), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat()}
@@ -25,13 +25,14 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
     cur_time = event_end
     fullAgenda.append(event)
 
-  #Fill in the days after the last event as available
+  #Fill in the days after the last event as `Available`
   while cur_time < end_date:
     if cur_time < cur_time.replace(hour=end_time.hour, minute=end_time.minute):
       toAppend = {'summary': 'Available', 'start': cur_time.isoformat(), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat()}
       toAppend['formattedDate'] = formatDates(toAppend['start'], toAppend['end'])
       fullAgenda.append(toAppend)
     cur_time = cur_time.replace(hour=begin_time.hour, minute=begin_time.minute,days=+1)
+
   return fullAgenda
 
 def formatDates(startDate, endDate):

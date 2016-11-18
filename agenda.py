@@ -15,19 +15,16 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
     if cur_time < event_start:
       while cur_time < event_start.replace(hour=begin_time.hour,minute=begin_time.minute):
         if cur_time < cur_time.replace(hour=end_time.hour, minute=end_time.minute):
-          fullAgenda.append({'summary': 'Available', 'start': cur_time.isoformat().format("ddd MM/DD/YYYY HH:mm"), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat(), 'formattedDate': cur_time.format("ddd MM/DD/YYYY HH:mm") + ' - ' + cur_time.replace(hour=end_time.hour, minute=end_time.minute).format("ddd MM/DD/YYYY HH:mm")})
-
+          fullAgenda.append({'summary': 'Available', 'formattedDate': formatDates(cur_time.isoformat(), cur_time.replace(hour=end_time.hour, minute=end_time.minute))})
         cur_time = cur_time.replace(hour=begin_time.hour, minute=begin_time.minute,days=+1)
-      fullAgenda.append({'summary': 'Available', 'start': cur_time.isoformat().format("ddd MM/DD/YYYY HH:mm"), 'end': event_start.isoformat(), 'formattedDate': cur_time.format("ddd MM/DD/YYYY HH:mm") + ' - ' + event_start.format("ddd MM/DD/YYYY HH:mm")})        
+      fullAgenda.append({'summary': 'Available', 'formattedDate': formatDates(cur_time.isoformat(), event_start.isoformat())
     cur_time = event_end
     fullAgenda.append(event)
 
   #Fill in the days after the last event as available
   while cur_time < end_date:
     if cur_time < cur_time.replace(hour=end_time.hour, minute=end_time.minute):
-      toAppend = {'summary': 'Available', 'start': cur_time.isoformat().format("ddd MM/DD/YYYY HH:mm"), 'end': cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat()}
-      toAppend['formattedDate'] = formatDates(toAppend['start'], toAppend['end'])
-      fullAgenda.append(toAppend)
+      fullAgenda.append({'summary': 'Available', 'formattedDate': formatDates(cur_time.isoformat(), cur_time.replace(hour=end_time.hour, minute=end_time.minute).isoformat()))
     cur_time = cur_time.replace(hour=begin_time.hour, minute=begin_time.minute,days=+1)
       
   return fullAgenda
@@ -37,4 +34,4 @@ def formatDates(startDate, endDate):
   endOBJ = arrow.get(endDate)
   if startOBJ.format("ddd MM/DD/YYYY") == endOBJ.format("ddd MM/DD/YYYY"):
     return startOBJ.format("ddd MM/DD/YYYY") + ": " + startOBJ.format("HH:mm") + " - " + endOBJ.format("HH:mm")
-  return "testing --"
+  return startOBJ.format("ddd MM/DD/YYYY HH:mm") + ' - ' + endOBJ.format("ddd MM/DD/YYYY HH:mm")   

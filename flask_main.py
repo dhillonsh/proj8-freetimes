@@ -102,7 +102,7 @@ def selectcalendars():
         if itemEnd <= begin_date or itemStart >= end_date:
           continue
 
-        toAppend = {'summary': item['summary'], 'start': item['start']['dateTime'], 'end': item['end']['dateTime'], 'calendar': calendar}
+        toAppend = {'summary': item['summary'], 'start': item['start']['dateTime'], 'end': item['end']['dateTime'], 'calendar': eventList['summary']}
         toAppend['formattedDate'] = formatDates(arrow.get(toAppend['start']).isoformat(), arrow.get(toAppend['end']).isoformat())
         busyTimes.append(toAppend)
               

@@ -101,7 +101,7 @@ def selectcalendars():
         end_date = arrow.get(itemEnd).replace(hour=end_time.hour, minute=end_time.minute)
         if itemEnd <= begin_date or itemStart >= end_date:
           continue
-        
+        print("Here")
         toAppend = {'summary': item['summary'], 'start': item['start']['dateTime'], 'end': item['end']['dateTime']}
         toAppend['formattedDate'] = formatDates(arrow.get(toAppend['start']).format("ddd MM/DD/YYYY HH:mm"), arrow.get(toAppend['end']).format("ddd MM/DD/YYYY HH:mm"))
         busyTimes.append(toAppend)

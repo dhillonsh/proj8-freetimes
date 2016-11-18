@@ -6,6 +6,7 @@ def test_noEvents():
   singleDay = agenda("2016-11-17","2016-11-17","2016-11-17T08:00:00:00", "2016-11-17T17:00:00:00", [])
   assert len(singleDay) == 1
   print(arrow.get(singleDay[0]['end']).format('YYYY-MM-DD HH:mm'))
+  print("2016-11-17 17:00")
   assert arrow.get(singleDay[0]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:00"
   assert arrow.get(singleDay[0]['end']).format('YYYY-MM-DD HH:MM') == "2016-11-17 17:00"
   

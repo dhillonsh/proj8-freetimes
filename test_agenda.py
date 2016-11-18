@@ -31,8 +31,8 @@ def test_singleEvent():
   assert startDayEvent[1]['summary'] == 'Available'
 
   #Event at the end of the day and time
-  busyList['start'] = "2016-11-17T16:30:00:00"
-  busyList['end'] = "2016-11-17T17:00:00:00"
+  busyList[0]['start'] = "2016-11-17T16:30:00:00"
+  busyList[0]['end'] = "2016-11-17T17:00:00:00"
   endDayEvent = agenda("2016-11-17","2016-11-17","2016-11-17T08:00:00:00", "2016-11-17T17:00:00:00", busyList)
   assert len(endDayEvent) == 2
   assert arrow.get(endDayEvent[0]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:00"

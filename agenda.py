@@ -32,7 +32,7 @@ def agenda(startDay, endDay, startTime, endTime, busyList):
       toAppend = formatDates(toAppend['start'], toAppend['end'])
       fullAgenda.append(toAppend)
     cur_time = cur_time.replace(hour=begin_time.hour, minute=begin_time.minute,days=+1)
-      
+  print(fullAgenda)
   return fullAgenda
 
 def formatDates(startDate, endDate):

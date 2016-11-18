@@ -103,7 +103,7 @@ def test_eventPastBoundaries():
   assert arrow.get(earlyEvent[0]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:30"
   assert earlyEvent[0]['summary'] == 'randomEvent'
   assert arrow.get(earlyEvent[1]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:30"
-  assert arrow.get(earlyEvent[1]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 11:00"
+  assert arrow.get(earlyEvent[1]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 17:00"
   assert earlyEvent[1]['summary'] == 'Available'
   
   #Event start 30 minutes before end time and ends 30 minutes after end time

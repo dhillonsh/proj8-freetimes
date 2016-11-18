@@ -78,7 +78,7 @@ def test_noFreeTime():
   #Single Event, all day
   busyList = [{'summary': 'randomEvent1', 'start': "2016-11-17T08:00:00:00", 'end': "2016-11-17T17:00:00:00"}]
   singleAllDayEvent = agenda("2016-11-17","2016-11-17","2016-11-17T08:00:00:00", "2016-11-17T17:00:00:00", busyList)
-  assert len(allDayEvent) == 1
+  assert len(singleAllDayEvent) == 1
   assert arrow.get(singleAllDayEvent[0]['start']).format('YYYY-MM-DD HH:mm') == "2016-11-17 08:00"
   assert arrow.get(singleAllDayEvent[0]['end']).format('YYYY-MM-DD HH:mm') == "2016-11-17 17:00"
   assert singleAllDayEvent[0]['summary'] == 'randomEvent1'

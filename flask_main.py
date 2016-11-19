@@ -95,6 +95,11 @@ def selectcalendars():
         if 'transparency' in item:
           continue
 
+        if 'dateTime' not in item['start']:
+          item['start']['dateTime'] = arrow.get(item['start']['date']).replace(hour=begin_time.hour, minute=begin_time.minute).isoformat()
+        if 'dateTime' not in item['end']:
+          item['end']['dateTime'] = arrow.get(item['end']['date']).replace(hour=begin_time.hour, minute=begin_time.minute).isoformat()
+
         itemStart = arrow.get(item['start']['dateTime'])
         itemEnd = arrow.get(item['end']['dateTime'])
         begin_date = arrow.get(itemStart).replace(hour=begin_time.hour, minute=begin_time.minute)
